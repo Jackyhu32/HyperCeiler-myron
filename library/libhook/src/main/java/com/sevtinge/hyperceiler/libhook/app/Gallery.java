@@ -37,8 +37,14 @@ import com.sevtinge.hyperceiler.libhook.rules.gallery.UnPrivacyWatermark;
 @HookBase(targetPackage = "com.miui.gallery")
 public class Gallery extends BaseLoad {
 
+    private static final String TAG = "HyperCeilerGallery";
+
     @Override
     public void onPackageLoaded() {
+        android.util.Log.i(TAG, "Gallery.onPackageLoaded entered");
+        int backupServer = PrefsBridge.getStringAsInt("gallery_backup_server", 0);
+        android.util.Log.i(TAG, "gallery_backup_server=" + backupServer);
+
         initHook(new LongerTrashbinTime(), PrefsBridge.getBoolean("gallery_longer_trashbin_time"));
         initHook(new UnPrivacyWatermark(), PrefsBridge.getBoolean("gallery_enable_un_privacy_watermark"));
         initHook(new EnableHdrEnhance(), PrefsBridge.getBoolean("gallery_enable_hdr_enhanced"));
@@ -50,6 +56,7 @@ public class Gallery extends BaseLoad {
         initHook(new EnableVideoEditor(), PrefsBridge.getBoolean("gallery_enable_video_editor"));
         initHook(new EnableOcr(), PrefsBridge.getBoolean("gallery_enable_ocr"));
         initHook(new EnableOcrForm(), PrefsBridge.getBoolean("gallery_enable_ocr_form"));
-        initHook(new ChangeBackupServer(), PrefsBridge.getStringAsInt("gallery_backup_server", 0) != 0);
+        initHook(new ChangeBackupServer(), backupServer != 0);
+        android.util.Log.i(TAG, "ChangeBackupServer enabled=" + (backupServer != 0));
     }
 }
